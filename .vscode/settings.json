@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "vector": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "chrono": "cpp",
+        "random": "cpp",
+        "limits": "cpp",
+        "valarray": "cpp",
+        "iostream": "cpp",
+        "new": "cpp",
+        "string_view": "cpp",
+        "regex": "cpp"
+    }
+}
