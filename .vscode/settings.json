@@ -11,6 +11,10 @@
         "new": "cpp",
         "string_view": "cpp",
         "regex": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "array": "cpp",
+        "bitset": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp"
     }
 }
