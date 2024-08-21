@@ -19,7 +19,7 @@ public:
 
 
 int main(){
-    // improve is speed
+    // improve io speed
     ios::sync_with_stdio(false);
     cin.tie(0);
  
