@@ -9,7 +9,7 @@ public:
 
         while(i < j){
             int crt_area = (j-i)*min(height[i], height[j]);
-            rst = rst < crt_area ? crt_area : rst;
+            rst = max(rst, crt_area);
             if(height[i]<height[j]){
                 i++;
             }else{
