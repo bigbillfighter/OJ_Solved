@@ -2,30 +2,29 @@
 using namespace std;
 
 
-struct TreeNode {
+// Definition for singly-linked list.
+struct ListNode {
     int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- };
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
 
 class Solution {
 public:
-    int ans;
+    ListNode *detectCycle(ListNode *head) {
+        if(head == nullptr || head->next == nullptr || head->next->next==nullptr) return nullptr;
+        ListNode *slow = head->next, *fast = head->next->next;
+        while(fast != slow){
+            if(fast->next==nullptr || fast->next->next==nullptr) return nullptr;
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+        ListNode *p = head;
+        while(p!=slow){
+            p=p->next;
+            slow=slow->next;
+        }
+        return p;
 
-    int deepth(TreeNode *root){
-        if(root == nullptr) return 0;
-        int left_len = root->left == nullptr ? 0 : deepth(root->left) + 1;
-        int right_len = root->right == nullptr ? 0 : deepth(root->right) + 1;
-        ans = max(ans, left_len + right_len);
-        return max(left_len, right_len);
-    }
-
-    int diameterOfBinaryTree(TreeNode* root) {
-        ans = 0;
-        deepth(root);
-        return ans;
     }
 };
