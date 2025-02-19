@@ -1,26 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+int dp[1002];
 
 class Solution {
 public:
-    bool wordBreak(string s, vector<string>& wordDict) {
-        unordered_set<string> wordDictSet;
-        for(auto word: wordDict) {
-            wordDictSet.insert(word);
-        }
+    int dp_fun(string s, vector<string>& wordDict){
+        int slen = s.size(), wlen;
+        if(dp[slen-1] >= 0) return dp[slen-1];
 
-        auto dp = vector <bool> (s.size() + 1);
-        dp[0] = true;
-        for (int i = 1; i <= s.size(); ++i) {
-            for (int j = 0; j < i; ++j) {
-                if (dp[j] && wordDictSet.find(s.substr(j, i - j)) != wordDictSet.end()) {
-                    dp[i] = true;
-                    break;
-                }
+        string crt;
+        for(int i=0; i<wordDict.size(); i++){
+            crt = wordDict[i];
+            wlen = crt.size();
+            if(slen < wlen) continue;
+
+            if(slen == wlen && s == crt){
+                return dp[slen-1] = 1;
             }
+
+            if(slen > wlen && s.substr(slen-wlen, wlen) == crt){
+                dp[slen-1] = dp_fun(s.substr(0, slen-wlen), wordDict);
+                if(dp[slen-1]) return dp[slen-1] = 1;
+            }
+
         }
 
-        return dp[s.size()];
+        return dp[slen-1] = 0;
+    }
+
+    bool wordBreak(string s, vector<string>& wordDict) {
+        fill(dp, dp+1002, -1);
+        bool ans = dp_fun(s, wordDict) == 1;
+        return ans;
     }
 };
