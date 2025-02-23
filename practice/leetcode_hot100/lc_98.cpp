@@ -15,37 +15,43 @@ struct TreeNode {
 
 class Solution {
 public:
-    map<TreeNode*, pair<int, int> > val_map;
-
-    bool find_valid(TreeNode* root){
-        bool crt_left = true, crt_right = true;
-        val_map[root] = make_pair(root->val, root->val);
-        if(root->left == nullptr && root->right == nullptr){
-            return true;
+    vector<int> crt_state(TreeNode* root){
+        if(root->left == nullptr && root -> right == nullptr){
+            return {1, root->val, root->val};
         }
 
+        int min_val=root->val, max_val=root->val;
+        if(root->left != nullptr){
+            vector<int> left_status = crt_state(root->left);
+            if(!left_status[0]){
+                return {0, -1, -1};
+            }else{
+                if(!(left_status[2] < root->val)){
+                    return {0, -1, -1};
+                }else{
+                    min_val = left_status[1];
+                }
+            }
+        }
 
-        if(root->left !=nullptr) {
-            crt_left = (root->left->val < root->val) && isValidBST(root->left);
-            crt_left = crt_left && val_map[root->left].first < root->val;
-            crt_left = crt_left && val_map[root->left].second < root->val;  
-            if(crt_left){
-                val_map[root].first = val_map[root->left].first;
-            }          
+        if(root->right != nullptr){
+            vector<int> right_status = crt_state(root->right);
+            if(!right_status[0]){
+                return {0, -1, -1};
+            }else{
+                if(!(right_status[1] > root->val)){
+                    return {0, -1, -1};
+                }else{
+                    max_val = right_status[2];
+                }
+            }
         }
-        if(root->right != nullptr) {
-            crt_right = (root->right->val > root->val) && isValidBST(root->right);
-            crt_right = crt_right && val_map[root->right].first > root->val;
-            crt_right = crt_right && val_map[root->right].second > root->val;  
-            if(crt_right){
-                val_map[root].second = val_map[root->right].second;
-            }   
-        }
-        return crt_left && crt_right;
+        return {1, min_val, max_val};
+
     }
 
     bool isValidBST(TreeNode* root) {
-        if(root == nullptr) return true;
-        return find_valid(root);
+        vector<int> rst = crt_state(root);
+        return rst[0] == 1;
     }
 };
